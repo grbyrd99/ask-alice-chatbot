@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - backend/**
+      - '**'  # Trigger on any file change
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
 
 jobs:
   build-and-deploy:
@@ -31,3 +32,4 @@ jobs:
         app-name: ask-alice-backend
         package: backend
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
