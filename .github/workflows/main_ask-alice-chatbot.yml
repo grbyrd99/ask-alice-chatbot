@@ -79,7 +79,8 @@ jobs:
         with:
           app-name: 'ask-alice-chatbot'
           slot-name: 'Production'
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          package: ${{ env.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
 
           
+
 
