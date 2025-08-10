@@ -31,7 +31,8 @@ jobs:
       with:
         app-name: ask-alice-chatbot
         package: backend
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
 
 
 
