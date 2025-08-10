@@ -78,9 +78,10 @@ jobs:
         id: deploy-to-function
         with:
           app-name: 'ask-alice-chatbot'
-          slot-name: 'Production'
+          slot-name: 'backend'
           package: ${{ env.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
 
           
+
 
 
