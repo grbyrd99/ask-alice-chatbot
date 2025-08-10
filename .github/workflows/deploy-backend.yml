@@ -32,4 +32,3 @@ jobs:
         app-name: ask-alice-backend
         package: backend
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-
