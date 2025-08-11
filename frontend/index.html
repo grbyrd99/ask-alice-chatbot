@@ -8,20 +8,40 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="lava-lamp">
-  <div class="lava-glass">
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
-  </div>
-</div>
   <div class="container">
     <h1 class="groovy-title">GoAskAlice 🌈</h1>
     <div class="chat-bubble">
       <p>Alice says: “You’ve got questions, I’ve got cosmic answers.”</p>
     </div>
-    <input type="text" placeholder="Ask Alice anything..." class="chat-input" />
+    <div class="chat-form">
+      <input type="text" id="userInput" placeholder="Ask Alice anything..." class="chat-input" />
+      <button onclick="submitQuestion()" class="submit-button">Ask Alice</button>
+    </div>
+    <div id="response" class="chat-response"></div>
   </div>
+
+  <div class="lava-lamp">
+    <div class="lava-glass">
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+      <div class="blob blob3"></div>
+    </div>
+  </div>
+
+  <script>
+    function submitQuestion() {
+      const input = document.getElementById('userInput').value;
+      const responseDiv = document.getElementById('response');
+      if (input.trim() === "") {
+        responseDiv.innerText = "Alice says: “Try asking something groovy!”";
+      } else {
+        responseDiv.innerText = `Alice says: “Whoa, deep question! Let me think about '${input}'...”`;
+        // Later: Replace this with actual API call to your backend
+      }
+    }
+  </script>
 </body>
 </html>
+
+
 
