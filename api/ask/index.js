@@ -1,19 +1,17 @@
-const { queryOpenRouter } = require('../utils/openrouter');
+const { runAgent } = require('../utils/agent');
 
 module.exports = async function (context, req) {
-  const userPrompt = req.body?.prompt || "Hello!";
-  const messages = [{ role: "user", content: userPrompt }];
-
+  const prompt = req.body?.prompt || "Hello!";
   try {
-    const result = await queryOpenRouter(messages);
+    const reply = await runAgent(prompt);
     context.res = {
       status: 200,
-      body: result
+      body: reply
     };
   } catch (err) {
     context.res = {
       status: 500,
-      body: { error: "Failed to query OpenRouter", details: err.message }
+      body: { error: "Agent failed", details: err.message }
     };
   }
 };
