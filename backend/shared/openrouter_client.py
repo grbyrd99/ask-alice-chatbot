@@ -1,7 +1,7 @@
 import requests
 import os
 
-def generate_response(message: str, model: str = "openrouter/llama2-13b-chat") -> str:
+def generate_response(message: str, model: str = "mistralai/devstral-medium") -> str:
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         return "Missing OpenRouter API key."
