@@ -48,3 +48,44 @@ body {
   50% { box-shadow: 0 0 20px #FF6F00; }
   100% { box-shadow: 0 0 10px #FF6F00; }
 }
+.lava-lamp {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  width: 100px;
+  height: 300px;
+  background-color: #222;
+  border-radius: 50px;
+  box-shadow: 0 0 20px #FF6F00;
+  overflow: hidden;
+}
+
+.lava-glass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #3B0A45, #1A0033);
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: #FF6F00;
+  border-radius: 50%;
+  animation: float 6s infinite ease-in-out;
+  opacity: 0.8;
+}
+
+.blob1 { top: 80%; left: 20%; animation-delay: 0s; }
+.blob2 { top: 50%; left: 40%; animation-delay: 2s; }
+.blob3 { top: 20%; left: 30%; animation-delay: 4s; }
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-100px) scale(1.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+
