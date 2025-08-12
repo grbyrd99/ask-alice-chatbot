@@ -1,9 +1,4 @@
-const { handleAgentRequest } = require('../agent'); // adjust if renamed
-
-module.exports = async function (context, req) {
-  try {
-    const input = req.body || req.query;
-    function handleAgentRequest(input) {
+function handleAgentRequest(input) {
   const question = input?.input || ''; // match frontend payload
 
   let answer;
@@ -20,5 +15,3 @@ module.exports = async function (context, req) {
 }
 
 module.exports = { handleAgentRequest };
-
-
