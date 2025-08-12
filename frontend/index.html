@@ -29,17 +29,42 @@
   </div>
 
   <script>
-    function submitQuestion() {
-      const input = document.getElementById('userInput').value;
-      const responseDiv = document.getElementById('response');
-      if (input.trim() === "") {
-        responseDiv.innerText = "Alice says: “Try asking something groovy!”";
-      } else {
-        responseDiv.innerText = `Alice says: “Whoa, deep question! Let me think about '${input}'...”`;
-        // Later: Replace this with actual API call to your backend
-      }
+  async function submitQuestion() {
+    const input = document.getElementById('userInput').value;
+    const responseDiv = document.getElementById('response');
+
+    if (input.trim() === "") {
+      responseDiv.innerText = "Alice says: “Try asking something groovy!”";
+      return;
     }
-  </script>
+
+    responseDiv.innerHTML = `<span class="typing">Alice says: “Thinking about '${input}'...”</span>`;
+
+    try {
+      const res = await fetch('/api/agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input })
+      });
+
+      const data = await res.json();
+      typeResponse(`Alice says: “${data.response}”`, responseDiv);
+    } catch (err) {
+      typeResponse("Alice says: “Hmm, something went wrong with the cosmic connection.”", responseDiv);
+    }
+  }
+
+  function typeResponse(text, element) {
+    element.innerHTML = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      element.innerHTML = text.slice(0, i) + '<span class="typing"></span>';
+      i++;
+      if (i > text.length) clearInterval(interval);
+    }, 40);
+  }
+</script>
+
   
 <script>
   async function callAgent() {
@@ -59,6 +84,7 @@
 
 </body>
 </html>
+
 
 
 
