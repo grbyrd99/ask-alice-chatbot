@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 {
   "name": "frontend",
   "version": "1.0.0",
+  "scripts": {
+    "build": "your-build-command"
+  },
   "dependencies": {}
 }
-=======
-
->>>>>>> fd25520c0e9d13e66925941a99bf46e8c0af12e5
