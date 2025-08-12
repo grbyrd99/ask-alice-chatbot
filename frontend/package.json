@@ -1,8 +1,8 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "your-build-command"
-  },
-  "dependencies": {}
+  "version": "2.0",
+  "isDefaultHostConfig": true,
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.*, 5.0.0)"
+  }
 }
