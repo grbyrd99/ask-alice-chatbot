@@ -1,17 +1,14 @@
-function handleAgentRequest(input) {
-  const question = input?.input || ''; // match frontend payload
+const { queryOpenRouter } = require('./openrouter');
 
-  let answer;
-  if (!question || typeof question !== 'string') {
-    answer = "Alice says: “Try asking something groovy!”";
-  } else if (question.toLowerCase().includes('time')) {
-    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    answer = `Alice says: “Time is a construct... but it's currently ${now} in your dimension.”`;
-  } else {
-    answer = `Alice says: “The cosmic answer to '${question}' is... 42.”`;
+async function handleAgentRequest(input) {
+  const question = input?.input || '';
+
+  if (!question) {
+    return { answer: "Alice says: “Try asking something groovy!”" };
   }
 
-  return { answer }; // frontend expects this shape
+  const response = await queryOpenRouter(question);
+  return { answer: `Alice says: “${response}”` };
 }
 
 module.exports = { handleAgentRequest };
