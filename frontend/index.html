@@ -4,88 +4,67 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GoAskAlice 🌈</title>
-  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+    }
+    #chat-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    #response {
+      margin-top: 1rem;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1 class="groovy-title">GoAskAlice 🌈</h1>
-    <div class="chat-bubble">
-      <p>Alice says: “You’ve got questions, I’ve got cosmic answers.”</p>
-    </div>
-    <div class="chat-form">
-      <input type="text" id="userInput" placeholder="Ask Alice anything..." class="chat-input" />
-      <button onclick="submitQuestion()" class="submit-button">Ask Alice</button>
-    </div>
-    <div id="response" class="chat-response"></div>
-  </div>
-
-  <div class="lava-lamp">
-    <div class="lava-glass">
-      <div class="blob blob1"></div>
-      <div class="blob blob2"></div>
-      <div class="blob blob3"></div>
-    </div>
+  <h1>GoAskAlice 🌈</h1>
+  <div id="chat-container">
+    <input type="text" id="userInput" placeholder="Ask Alice anything..." />
+    <button onclick="queryAlice()">Send</button>
+    <div id="response"></div>
   </div>
 
   <script>
-  async function submitQuestion() {
-    const input = document.getElementById('userInput').value;
-    const responseDiv = document.getElementById('response');
+    async function queryAlice() {
+      const input = document.getElementById('userInput').value;
+      const responseDiv = document.getElementById('response');
+      responseDiv.textContent = 'Thinking...';
 
-    if (input.trim() === "") {
-      responseDiv.innerText = "Alice says: “Try asking something groovy!”";
-      return;
+      try {
+        const res = await fetch('/api/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: input })
+        });
+
+        const data = await res.json();
+        responseDiv.textContent = data.answer || 'No response received.';
+      } catch (err) {
+        responseDiv.textContent = 'Error querying Alice: ' + err.message;
+      }
     }
-
-    responseDiv.innerHTML = `<span class="typing">Alice says: “Thinking about '${input}'...”</span>`;
-
-    try {
-      const res = await fetch('/api/agent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input })
-      });
-
-      const data = await res.json();
-      typeResponse(`Alice says: “${data.response}”`, responseDiv);
-    } catch (err) {
-      typeResponse("Alice says: “Hmm, something went wrong with the cosmic connection.”", responseDiv);
-    }
-  }
-
-  function typeResponse(text, element) {
-    element.innerHTML = "";
-    let i = 0;
-    const interval = setInterval(() => {
-      element.innerHTML = text.slice(0, i) + '<span class="typing"></span>';
-      i++;
-      if (i > text.length) clearInterval(interval);
-    }, 40);
-  }
-</script>
-
-  
-<script>
-  async function callAgent() {
-    const input = document.getElementById('questionInput').value;
-    const responseBox = document.getElementById('responseBox');
-
-    const res = await fetch('/api/agent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input })
-    });
-
-    const data = await res.json();
-    responseBox.textContent = JSON.stringify(data, null, 2);
-  }
-</script>
-
+  </script>
 </body>
 </html>
-
-
-
-
-

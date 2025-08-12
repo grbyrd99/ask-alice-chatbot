@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GoAskAlice 🌈</title>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 class="groovy-title">GoAskAlice 🌈</h1>
+    <div class="chat-bubble">
+      <p>Alice says: “You’ve got questions, I’ve got cosmic answers.”</p>
+    </div>
+    <div class="chat-form">
+      <input type="text" id="userInput" placeholder="Ask Alice anything..." class="chat-input" />
+      <button onclick="submitQuestion()" class="submit-button">Ask Alice</button>
+    </div>
+    <div id="response" class="chat-response"></div>
+  </div>
+
+  <div class="lava-lamp">
+    <div class="lava-glass">
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+      <div class="blob blob3"></div>
+    </div>
+  </div>
+
+  <script>
+  async function submitQuestion() {
+    const input = document.getElementById('userInput').value;
+    const responseDiv = document.getElementById('response');
+
+    if (input.trim() === "") {
+      responseDiv.innerText = "Alice says: “Try asking something groovy!”";
+      return;
+    }
+
+    responseDiv.innerHTML = `<span class="typing">Alice says: “Thinking about '${input}'...”</span>`;
+
+    try {
+      const res = await fetch('/api/agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input })
+      });
+
+      const data = await res.json();
+      typeResponse(`Alice says: “${data.response}”`, responseDiv);
+    } catch (err) {
+      typeResponse("Alice says: “Hmm, something went wrong with the cosmic connection.”", responseDiv);
+    }
+  }
+
+  function typeResponse(text, element) {
+    element.innerHTML = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      element.innerHTML = text.slice(0, i) + '<span class="typing"></span>';
+      i++;
+      if (i > text.length) clearInterval(interval);
+    }, 40);
+  }
+</script>
+
+  
+<script>
+  async function callAgent() {
+    const input = document.getElementById('questionInput').value;
+    const responseBox = document.getElementById('responseBox');
+
+    const res = await fetch('/api/agent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input })
+    });
+
+    const data = await res.json();
+    responseBox.textContent = JSON.stringify(data, null, 2);
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
