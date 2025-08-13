@@ -1,18 +1,42 @@
-# __init__.py
-import azure.functions as func
+import logging
 import json
-from .openrouter import query_openrouter
+import azure.functions as func
+import openai  # or your preferred LLM client
 
-async def main(req: func.HttpRequest) -> func.HttpResponse:
+# Optional: Load your OpenAI key from environment variables
+import os
+openrouter.api_key = os.getenv("OPENROUTER_API_KEY")
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info("Alice received a query.")
+
     try:
+        # Parse incoming JSON
         req_body = req.get_json()
-        user_input = req_body.get("input", "").strip()
+        question = req_body.get("question")
 
-        if not user_input:
-            return func.HttpResponse(json.dumps({"response": "Try asking something groovy!"}), mimetype="application/json")
+        if not question:
+            raise ValueError("Missing 'question' in request body.")
 
-        response = await query_openrouter(user_input)
-        return func.HttpResponse(json.dumps({"response": response}), mimetype="application/json")
+        # Call your LLM or backend logic
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # or your preferred model
+            messages=[{"role": "user", "content": question}]
+        )
+
+        answer = response.choices[0].message.content.strip()
+
+        # Return a valid JSON response
+        return func.HttpResponse(
+            json.dumps({ "answer": answer }),
+            mimetype="application/json",
+            status_code=200
+        )
 
     except Exception as e:
-        return func.HttpResponse(json.dumps({"response": "Hmm, something went wrong with the cosmic connection."}), mimetype="application/json")
+        logging.error(f"Error querying Alice: {str(e)}")
+        return func.HttpResponse(
+            json.dumps({ "error": str(e) }),
+            mimetype="application/json",
+            status_code=500
+        )
